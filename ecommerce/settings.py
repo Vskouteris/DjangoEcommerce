@@ -75,6 +75,7 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+import dj_database_url
 
 DATABASES = {
     'default': {
@@ -85,6 +86,7 @@ DATABASES = {
         'HOST': 'localhost'
     }
 }
+DATABASES['default'] = dj_database_url.config()
 
 
 # Password validation
