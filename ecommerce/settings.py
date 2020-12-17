@@ -86,7 +86,9 @@ DATABASES = {
         'HOST': 'localhost'
     }
 }
-DATABASES['default'] = dj_database_url.config()
+temp_db = dj_database_url.config()
+if temp_db:
+    DATABASES['default'] = temp_db
 
 
 # Password validation
@@ -122,12 +124,16 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# STATIC FILES (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+# STATIC_URL is the URL used when referring to static files. It must end with / if it is set to any value except None. 
+# The following path means that static files will be stored in the location http://localhost:8000/static/ 
 STATIC_URL = '/static/'
+# STATIC_ROOT is the path that defines where your static files will be collected.
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
-
+# To use a commonplace for all static files in your project directory, we need to configure STATICFILES_DIRS to inform Django 
+# about our new directory because AppDirectoriesFinder will look for static in app directories only.
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
@@ -136,4 +142,5 @@ MEDIA_URL = '/images/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 #  Add configuration for static files storage using whitenoise
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
