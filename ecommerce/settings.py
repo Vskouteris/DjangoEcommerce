@@ -39,11 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'store.apps.StoreConfig',
+
+    'storages',
 ]
 
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -124,7 +126,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-# STATIC FILES (CSS, JavaScript, Images)
+# STATIC FILES (CSS, JavaScript, Images) 
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 # STATIC_URL is the URL used when referring to static files. It must end with / if it is set to any value except None. 
@@ -140,7 +142,25 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/images/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+####### MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 #  Add configuration for static files storage using whitenoise
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+#set S3 as the place to store your files.
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+AWS_ACCESS_KEY_ID = "AKIARHYDLB3L4KIB73X5"
+AWS_SECRET_ACCESS_KEY = "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"
+AWS_STORAGE_BUCKET_NAME = "rozpanthiras-in-heroku"
+AWS_QUERYSTRING_AUTH = False #This will make sure that the file URL does not have unnecessary parameters like your access key.
+AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + ".s3.amazonaws.com" +"/"
+#static media settings
+STATIC_URL = 'https://' + AWS_S3_CUSTOM_DOMAIN +"static/"
+MEDIA_URL  = 'https://' + AWS_S3_CUSTOM_DOMAIN + "media/"
+STATICFILES_DIRS = ( os.path.join(BASE_DIR, "static"), )
+STATIC_ROOT = "staticfiles"
+ADMIN_MEDIA_PREFIX = STATIC_URL + "admin/"
+STATICFILES_FINDERS = (
+"django.contrib.staticfiles.finders.FileSystemFinder",
+"django.contrib.staticfiles.finders.AppDirectoriesFinder",
+)
