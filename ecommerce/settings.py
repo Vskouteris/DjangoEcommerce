@@ -151,10 +151,13 @@ DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 AWS_ACCESS_KEY_ID = "AKIARHYDLB3L4KIB73X5"
 AWS_SECRET_ACCESS_KEY = "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"
-AWS_STORAGE_BUCKET_NAME = "rozpanthiras-in-heroku"
+AWS_STORAGE_BUCKET_NAME = "vasilisskouteris18122020"
 AWS_QUERYSTRING_AUTH = False #This will make sure that the file URL does not have unnecessary parameters like your access key.
 AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + ".s3.amazonaws.com" +"/"
-#static media settings
+
+AWS_DEFAULT_ACL ="public-read"
+AWS_LOCATION = "static"
+
 STATIC_URL = 'https://' + AWS_S3_CUSTOM_DOMAIN +"static/"
 MEDIA_URL  = 'https://' + AWS_S3_CUSTOM_DOMAIN + "media/"
 STATICFILES_DIRS = ( os.path.join(BASE_DIR, "static"), )
