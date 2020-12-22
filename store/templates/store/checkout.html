@@ -16,7 +16,7 @@
 					
 					<div id="shipping-info">
 						<hr>
-						<p>Shipping Information:</p>
+						<p>Billing Address:</p>
 						<hr>
 						<div class="form-field">
 							<input class="form-control" type="text" name="address" placeholder="Address..">
@@ -31,15 +31,44 @@
 							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="country" placeholder="Zip code..">
+							<input class="form-control" type="text" name="country" placeholder="Country..">
 						</div>
 					</div>
+					
+					<div id="delivery-address">
+						<hr>
+						<p>Shipping Address:</p>
+						<hr>
+						<div class="form-field">
+							<li class="control">
 
-					<hr>
+								<input type="radio" name="billing[use_for_shipping]" id="billing:use_for_shipping_yes" value="1" checked="checked"  title="Ship to the address above" onclick="$('shipping:same_as_billing').checked = true;" class="radio" />
+								<label for="billing:use_for_shipping_yes">Ship to the address above</label>
+		
+							</li>
+							<li class="control">
+								<input type="radio" name="billing[use_for_shipping]" id="billing:use_for_shipping_store" value="2" title="Delivery in Store (Click & Collect)" onclick="$('shipping:same_as_billing').checked = false;" class="radio" />
+								<label for="billing:use_for_shipping_store">Pick up from Store </label>
+								<div id="click&collect-info" class="hidden">
+									<div>
+										<p class="text-danger">Dear customers please leave your phone number and tell us which day do you believe you will come to collect for better organising and communicating</p>
+									</div>
+									<div class="form-field">
+										<input  class="form-control" type="text" name="phone" placeholder="Phone number..">
+									</div>
+									<br>
+									<div class="form-field">
+										<input  class="form-control" type="text" name="pickupday" placeholder="Posible collecting day..">
+									</div>
+								</div>
+		
+							</li>
+						</div>
+					</div>
 					<input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
 				</form>
 			</div>
-
+	
 			<br>
 			<div class="box-element hidden" id="payment-info">
 				<small>Paypal Options</small>
@@ -129,7 +158,12 @@
 	    	document.getElementById('payment-info').classList.remove("hidden");
 	    })
 
-		
+		document.getElementById('billing:use_for_shipping_yes').addEventListener("click",function(e){
+			document.getElementById('click&collect-info').classList.add("hidden");
+		})
+		document.getElementById('billing:use_for_shipping_store').addEventListener("click",function(e){
+			document.getElementById('click&collect-info').classList.remove("hidden");
+		})
 	    document.getElementById('make-payment').addEventListener('click', function(e){
 	    	submitFormData()
 	    })
@@ -149,6 +183,8 @@
 				'city':null,
 				'state':null,
 				'zipcode':null,
+				'pickupday':null,
+				'phone':null,
 			}
 
 			if (shipping != 'False'){
@@ -161,6 +197,11 @@
 	    	if (user == 'AnonymousUser'){
 	    		userFormData.name = form.name.value
 	    		userFormData.email = form.email.value
+	    	}
+
+			if (document.getElementById('billing:use_for_shipping_store').checked){
+	    		shippingInfo.phone = form.phone.value
+	    		shippingInfo.pickupday = form.pickupday.value
 	    	}
 
 	    	console.log('Shipping Info:', shippingInfo)
