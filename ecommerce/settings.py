@@ -150,15 +150,13 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #set S3 as the place to store your files.
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')     #using decouple config to get environment variables
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = "vasilisskouteris18122020"
 AWS_QUERYSTRING_AUTH = False #This will make sure that the file URL does not have unnecessary parameters like your access key.
 AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + ".s3.amazonaws.com" 
-
 AWS_DEFAULT_ACL ="public-read"
 AWS_LOCATION = "static"
-
 STATIC_URL = 'https://' + AWS_S3_CUSTOM_DOMAIN +"static/"
 MEDIA_URL  = 'https://' + AWS_S3_CUSTOM_DOMAIN + "media/"
 STATICFILES_DIRS = ( os.path.join(BASE_DIR, "static"), )
@@ -168,3 +166,7 @@ STATICFILES_FINDERS = (
 "django.contrib.staticfiles.finders.FileSystemFinder",
 "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 )
+
+# djangostripe/settings.py
+STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')   #using decouple config to get environment variables
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
