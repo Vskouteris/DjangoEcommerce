@@ -1,9 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.urls import reverse
 import json
 import datetime
 from .models import * 
 from .utils import cookieCart, cartData, guestOrder
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+import stripe
 
 def store(request):
 	data = cartData(request)
@@ -90,3 +94,37 @@ def processOrder(request):
 		)
 
 	return JsonResponse('Payment submitted..', safe=False)
+
+# a function to get the stripe publickey from the settings file
+@csrf_exempt
+def stripe_config(request):
+    if request.method == 'GET':
+        stripe_config = {'publicKey': settings.STRIPE_PUBLISHABLE_KEY}
+        return JsonResponse(stripe_config, safe=False)
+
+def charge(request):
+	if request.method == 'POST':
+		print('Data:', request.POST)
+		amount=100
+		# amount = int(request.POST['amount'])
+		# print("amount:",amount)
+
+		# customer = stripe.Customer.create(
+		# 	email=request.POST['email'],
+		# 	name=request.POST['nickname'],
+		# 	source=request.POST['stripeToken']
+		# 	)
+
+		# charge = stripe.Charge.create(
+		# 	customer=customer,
+		# 	amount=amount*100,
+		# 	currency='usd',
+		# 	description="Donation"
+		# 	)
+
+	return redirect(reverse('success', args=[amount]))
+
+
+def successMsg(request, args):
+	amount = args
+	return render(request, 'store/success.html', {'amount':amount})

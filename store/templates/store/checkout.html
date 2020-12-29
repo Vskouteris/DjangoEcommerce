@@ -65,16 +65,35 @@
 							</li>
 						</div>
 					</div>
-					<input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+					<input id="form-button" class="btn btn-success btn-block rounded-pill" type="submit" value="Continue">
 				</form>
 			</div>
 	
 			<br>
 			<div class="box-element hidden" id="payment-info">
-				<small>Paypal Options</small>
+				<label for="paypal-button-container">
+					PayPal
+				  </label>
 				<!-- <button id="make-payment" class="btn-info" >Make payment</button> -->
 				<br>
 				<div id="paypal-button-container"></div>
+				<!-- <input id="stripe-button" class="btn btn-warning btn-block rounded-pill" type="submit" value="VISA-MASTERCARD"> -->
+				<form action="{% url 'charge' %}" method="post" id="payment-form">
+					{% csrf_token %}
+					<div class="form-row">
+					  <label for="card-element">
+						Credit or debit card
+					  </label>
+					  <div id="card-element" class="form-control">
+						<!-- A Stripe Element will be inserted here. -->
+					  </div>
+				  
+					  <!-- Used to display form errors. -->
+					  <div id="card-errors" role="alert"></div>
+					</div>
+				  
+					<button class="btn btn-warning btn-block rounded-pill">Submit Payment</button>
+				  </form>
 			</div>
 			
 		</div>
@@ -99,13 +118,20 @@
 		</div>
 	</div>
 
-	<script src="https://www.paypal.com/sdk/js?client-id=AWCt-XTQwkfLnv2cM53kHTLbT6bi4iwhoEJieZpcWkLLE_7A1P5Zysljf9cDbInCNxEvGRyGd3veTbVm&currency=EUR"></script>
+	<script src="https://www.paypal.com/sdk/js?client-id=AWCt-XTQwkfLnv2cM53kHTLbT6bi4iwhoEJieZpcWkLLE_7A1P5Zysljf9cDbInCNxEvGRyGd3veTbVm&currency=EUR&disable-funding=card"></script>
+	<script type="text/javascript" src="{% static 'js/stripe.js' %}"></script>
 
     <script>
 		var total = '{{order.get_cart_total}}'
 		// Render the PayPal button into #paypal-button-container
         paypal.Buttons({
-
+			style: {
+                color:  'blue',
+                shape:  'pill',
+				label:  'pay',
+				size:   'medium',
+                height: 40
+            },
             // Set up the transaction
             createOrder: function(data, actions) {
                 return actions.order.create({
@@ -158,9 +184,11 @@
 	    })
 
 		document.getElementById('billing:use_for_shipping_yes').addEventListener("click",function(e){
+			document.getElementById('shipping-info').classList.remove("hidden");
 			document.getElementById('click&collect-info').classList.add("hidden");
 		})
 		document.getElementById('billing:use_for_shipping_store').addEventListener("click",function(e){
+			document.getElementById('shipping-info').classList.add("hidden");
 			document.getElementById('click&collect-info').classList.remove("hidden");
 		})
 	    // document.getElementById('make-payment').addEventListener('click', function(e){

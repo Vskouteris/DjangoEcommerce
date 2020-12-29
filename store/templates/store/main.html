@@ -4,14 +4,30 @@
 <head>
 	<title>Roz pantheras</title>
 
-	<link rel="icon" href="data:;base64,=">		<!-- just there to prevent a favicon.ico request that gives an error .Maybe in production get rid of that line -->
+	<link rel="icon" href="data:;base64,=">		<!-- just there to prevent a favicon.ico request that gives an error. Maybe in production I can get rid of that line -->
 
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+	<style>
+        /* Blue outline on focus */
+        .StripeElement--focus {
+            border-color: #80BDFF;
+            outline:0;
+            box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+        /* Can't see what I type without this */
+        #card-number.form-control,
+        #card-cvc.form-control,
+        #card-exp.form-control {
+            display:inline-block;
+        }
+    </style>
 
+	<script type="text/javascript" src="https://js.stripe.com/v3/"></script>
 	<script type="text/javascript">
 		var user = '{{request.user}}'
 
@@ -163,6 +179,6 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 	<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
-	<script type="text/javascript" src="{% static 'js/stripe.js' %}"></script>
+	<!-- <script type="text/javascript" src="{% static 'js/stripe.js' %}"></script> -->
 </body>
 </html>
